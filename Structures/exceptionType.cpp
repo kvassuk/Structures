@@ -1,6 +1,12 @@
 #include "exceptionType.h"
 
-const char* exceptionType::what () const throw()
+exceptionType::exceptionType(const char* msg)
+	:exception()
 {
-    return "Bad cast exception";
+	message= msg;
+}
+
+const char* exceptionType::what() const throw()
+{
+	return message;
 }

@@ -4,8 +4,12 @@
 class exceptionType: public std::exception
 {
 public:
-	exceptionType () :exception () {}
-	const char* what () const throw ();	
+	
+	exceptionType(const char* msg = "Bad cast exception");
+
+	const char* what() const throw ();
+private:
+	const char* message;
 
 };
 

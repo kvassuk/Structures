@@ -53,7 +53,6 @@ AnyType::AnyType(bool b)
 
 AnyType::AnyType(const AnyType& other)
 {
-	delete this->container;
 	container = new data;
 	container->variabletype = other.container->variabletype;
 	switch (container->variabletype)
@@ -107,57 +106,79 @@ AnyType& AnyType::operator=(const AnyType& other)
 
 AnyType::AnyType(AnyType&& other) noexcept
 {
-	container = other.container;
+	delete container;
+	container = nullptr;
+	container = other.container;	
 	other.container = nullptr;
 }
 
 AnyType& AnyType::operator=(AnyType&& other) noexcept
 {
-	delete container;
-	container = new data;
-	container = other.container;
+	delete container;	
+	container = nullptr;
+	container = other.container;	
 	other.container = nullptr;
 	return *this;
 }
 
 int AnyType::ToInt() const
 {
-	if (container->variabletype != type_name::type_int)
-		throw exceptionType();
-	return container->var.var_int;
+	if (container)
+	{
+		if (container->variabletype != type_name::type_int)
+			throw exceptionType();
+		return container->var.var_int;
+	}
+	return 0;
 }
 
 double AnyType::ToDouble() const
 {
-	if (container->variabletype != type_name::type_double)
-		throw exceptionType();
-	return container->var.var_double;
+		if (container)
+		{
+			if (container->variabletype != type_name::type_double)
+				throw exceptionType();
+			return container->var.var_double;
+		}
+		return 0.0;
 }
 
 char AnyType::ToChar() const
 {
-	if (container->variabletype != type_name::type_char)
-		throw exceptionType();
-	return container->var.var_char;
+	if (container)
+	{
+		if (container->variabletype != type_name::type_char)
+			throw exceptionType();
+		return container->var.var_char;
+	}
+	return 0;
 }
 
 float AnyType::ToFloat() const
 {
-	if (container->variabletype != type_name::type_float)
-		throw exceptionType();
-	return container->var.var_float;
+	if (container) 
+	{
+		if (container->variabletype != type_name::type_float)
+			throw exceptionType();
+		return container->var.var_float;
+	}
+	return NAN;
 }
 
 bool AnyType::ToBool() const
 {
-	if (container->variabletype != type_name::type_bool)
-		throw exceptionType();
-	return container->var.var_bool;
+	if (container)
+	{
+		if (container->variabletype != type_name::type_bool)
+			throw exceptionType();
+		return container->var.var_bool;
+	}
+	return false;
 }
 
 void AnyType::swap(AnyType& other)
 {
-	if (other.container)
+	if (other.container&& this->container)
 	{
 		data* temp = this->container;
 		this->container = other.container;

@@ -9,7 +9,8 @@
 
 int main()
 {
-	AnyType a(5);
+	AnyType a;
+	AnyType b('C');
 
 	try
 	{
@@ -21,7 +22,10 @@ int main()
 	}
 
 
-	std::cout << a.ToInt() << ' ';
+	std::cout << a.ToBool() << ' ';
+	std::cout << a.current_container_type() << '\n';
+	a = std::move(b);
+	std::cout << a.ToChar() << ' ';
 	std::cout << a.current_container_type() << '\n';
 
 
